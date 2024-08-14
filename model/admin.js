@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema
 
 let admin = new Schema({
+    
     email: {
         type: String,
         required: true,

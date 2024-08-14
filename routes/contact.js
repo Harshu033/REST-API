@@ -2,16 +2,12 @@ var express = require('express');
 var router = express.Router();
 let Cc = require('../controllers/contact')
 
-router.get('/', function (req, res, next) {
-    res.render('contact', { title: 'Express' });
-});
-
 router.post('/create', Cc.ConCreat);
 
-router.get('/showAll', Cc.ConFindAll);
+router.get('/showAll', Cc.secure, Cc.ConFindAll);
 
-router.patch('/:id', Cc.ConUpdate);
+router.patch('/:id', Cc.secure,Cc.ConUpdate);
 
-router.delete('/:id', Cc.ConDelete);
+router.delete('/:id', Cc.secure,Cc.ConDelete);
 
 module.exports = router;

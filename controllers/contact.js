@@ -1,12 +1,43 @@
+const { token } = require('morgan');
 var CONTACT = require('../model/contact');
+var jwt = require('jsonwebtoken');
 
+
+exports.secure = async function (req, res, next) {
+    try {
+      let token = req.headers.authorization
+      if (!token) {
+        throw new Error("Please Attach token")
+      }
+      var decoded = jwt.verify(token, 'surat');
+     
+      let ConCheck = await CONTACT.findById(decoded.id);
+
+      if (!ConCheck) {
+        throw new Error("User Not Found")
+      }
+      next()
+  
+    } catch
+    (error) {
+      res.status(404).json({
+        status: "Fail",
+        message: error.message
+      })
+    }
+  }
+  
 exports.ConCreat = async function (req, res, next) {
     try {
         let contactCreate = await CONTACT.create(req.body)
+
+        var token = jwt.sign({ id: contactCreate._id }, 'surat');
+        
         res.status(201).json({
             status: "Success",
             message: "user Create Successfull",
-            data: contactCreate
+            data: contactCreate,
+            token
         })
     } catch
     (error) {
@@ -19,7 +50,13 @@ exports.ConCreat = async function (req, res, next) {
 
 exports.ConFindAll = async function (req, res, next) {
     try {
-        let contactAll = await CONTACT.find().populate('user')
+        let token = req.headers.authorization
+        
+        if (!token) {
+          throw new Error("Please Attach token")
+        }
+        var decoded = jwt.verify(token, 'surat');
+        let contactAll = await CONTACT.findById(decoded.id).populate('user')
         res.status(200).json({
             status: "Success",
             message: "user Found Successfull",
@@ -35,6 +72,8 @@ exports.ConFindAll = async function (req, res, next) {
 
 exports.ConUpdate = async function (req, res, next) {
     try {
+        console.log(token,"ss");
+        
         let contactupdate = await CONTACT.findByIdAndUpdate(req.params.id, req.body, { new: true })
 
         res.status(200).json({
