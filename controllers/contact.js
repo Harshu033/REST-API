@@ -2,7 +2,6 @@ const { token } = require('morgan');
 var CONTACT = require('../model/contact');
 var jwt = require('jsonwebtoken');
 
-
 exports.secure = async function (req, res, next) {
     try {
       let token = req.headers.authorization
