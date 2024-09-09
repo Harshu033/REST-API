@@ -6,14 +6,15 @@ var logger = require('morgan');
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/contact')
+mongoose.connect('mongodb://127.0.0.1:27017/blog')
   .then(() => console.log('Connected!'))
   .catch(err => console.log(err.message))
 
 // var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var contactRouter = require('./routes/contact');
-var adminRouter = require('./routes/admin');
+var authorRouter = require('./routes/author');
+var cateRouter = require('./routes/category');
+var commRouter = require('./routes/comments');
+var postRouter = require('./routes/post');
 
 var app = express();
 
@@ -28,9 +29,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
-app.use('/', usersRouter);
-app.use('/contact', contactRouter);
-app.use('/admin', adminRouter);
+app.use('/author', authorRouter);
+app.use('/category', cateRouter);
+app.use('/comments', commRouter);
+app.use('/post', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
