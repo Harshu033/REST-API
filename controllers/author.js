@@ -10,7 +10,7 @@ const multer = require('multer')
 //   secure: false, // Use `true` for port 465, `false` for all other ports
 //   auth: {
 //     user: "moviedownload8849@gmail.com",
-//     pass: "lyqhneanykacijbi",
+//     pass: "xxxxx",
 //   },
 // });
 
